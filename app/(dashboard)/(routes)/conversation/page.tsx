@@ -35,6 +35,8 @@ const ConversationPage = () => {
 
 
     console.log('messages', messages)
+    console.log('messages', messages)
+    console.log('messages', messages)
 
 
     const isLoading = form.formState.isSubmitting
