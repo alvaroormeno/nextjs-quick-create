@@ -120,6 +120,12 @@ const ConversationPage = () => {
 
             <div className='space-y-4 mt-4'>
 
+                {isLoading && (
+                    <div className='flex justify-center'>
+
+                    </div>
+                )}
+
                 {messages.length === 0 && !isLoading && (
                     <Empty label='No Conversation Started'/>
                 )}
