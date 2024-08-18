@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Montserrat } from 'next/font/google'
-
+import { usePathname } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 import {
@@ -64,6 +64,9 @@ const routes = [
 ]
 
 export const Sidebar = () => {
+
+    const currentPath = usePathname()
+
     return (
         <div className='space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white'>
             
@@ -89,7 +92,7 @@ export const Sidebar = () => {
                             <Link
                                 href={route.href}
                                 key={index}
-                                className='text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition'
+                                className={cn('text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition', currentPath === route.href ? 'text-white bg-white/10' : 'text-zinc-400')}
                             >
                             <div className='flex items-center flex-1'>
                                 <route.icon className={cn('h-5 w-5 mr-3', route.color)}/>
