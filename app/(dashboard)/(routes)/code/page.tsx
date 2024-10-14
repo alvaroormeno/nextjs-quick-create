@@ -5,7 +5,7 @@ import axios from 'axios'
 import * as z from "zod"
 import { cn } from '@/lib/utils'
 
-import { MessageSquare } from 'lucide-react'
+import { Code } from 'lucide-react'
 import { useForm } from "react-hook-form"
 import { useRouter } from 'next/navigation';
 
@@ -24,7 +24,9 @@ import {Empty} from '@/components/Empty'
 import { UserAvatar } from '@/components/UserAvatar'
 import BotAvatar from '@/components/BotAvatar'
 
-const ConversationPage = () => {
+import ReactMarkdown from 'react-markdown'
+
+const CodePage = () => {
 
     const [messages, setMessages] = React.useState<ChatCompletionMessageParam[]>([])
 
@@ -36,11 +38,6 @@ const ConversationPage = () => {
             prompt: '',
         }
     })
-
-
-    console.log('messages', messages)
-    console.log('messages', messages)
-    console.log('messages', messages)
 
 
     const isLoading = form.formState.isSubmitting
@@ -55,7 +52,7 @@ const ConversationPage = () => {
 
             const newMessages = [...messages, userMessage]
 
-            const response = await axios.post('/api/conversations', {
+            const response = await axios.post('/api/code', {
                 messages: newMessages
             })
 
@@ -87,11 +84,11 @@ const ConversationPage = () => {
     return (
         <div>
             <Heading 
-                title='Conversation'
+                title='Code XP'
                 description='Chat with the smartest AI on the planet. Ask questions, get answers, and learn new things.'
-                icon={MessageSquare}
+                icon={Code}
                 iconColor='text-violet-500'
-                bgColor='bg-violet-500/10'
+                bgColor='bg-green-700/10'
             />
 
             <div className='px-4 lg:px-8'>
@@ -109,7 +106,7 @@ const ConversationPage = () => {
                                     <Input 
                                         className='border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent'
                                         disabled={isLoading}
-                                        placeholder='Ask me anything... How does a computer work?'
+                                        placeholder='How to generate a random number in JavaScript?'
                                         {...field}
                                     />
                                 </FormControl>
@@ -143,7 +140,24 @@ const ConversationPage = () => {
                                 className={cn('p-8 w-full flex items-start gap-x-8 rounded-lg', message.role === 'user' ? 'bg-violet-500/10' : 'bg-violet-500/20')}
                             >
                                 {message.role === 'user' ? <UserAvatar /> : <BotAvatar />}
-                                {String(message.content)}
+
+                                <ReactMarkdown
+                                    components={{
+                                        pre: ({ node, ...props }) => (
+                                        <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
+                                            <pre {...props} />
+                                        </div>
+                                        ),
+                                        code: ({ node, ...props }) => (
+                                        <code className="bg-black/10 rounded-lg p-1" {...props} />
+                                        )
+                                    }}
+                                    className="text-sm overflow-hidden leading-7"
+                                    >
+                                    {String(message.content)}
+                                </ReactMarkdown>
+
+                                
                             </div>
                         ))}
                     </div>
@@ -155,4 +169,4 @@ const ConversationPage = () => {
     )
 }
 
-export default ConversationPage
+export default CodePage
